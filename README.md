@@ -1,8 +1,288 @@
-# IMEXjs
+# IMEX.js
 IMEX (pronounced im-ex) is a code modularization library that provides elegant and easy ways to share and reuse codes from different files or scripts in a web application or even other web applications.    
 
-IMEXjs is simple. Write your code in modular form like you would when writing nodejs applications. This avoids code re-writing and allows for code reusability. Also, thinnk of a component based application which may have over 1000 separate files that make up the entire code base of an app. Would you bundle all files together and serve them at once? I guess no. The best approach is to serve only files or scripts neccessary to get the app running at a pareticular moment. IMEX makes this easy.    
+IMEXjs is simple. Write your code in modular form like you would when writing nodejs applications. This avoids code re-writing and allows for code reusability. Also, think of a component based application which may have over 1000 separate files that make up the entire code base of an app. Would you bundle all files together and serve them at once? I guess no. The best approach is to serve only files or scripts neccessary to get the app running at a particular moment. IMEX makes this easy.    
 
-IMEXjs brings into you application what is known as a package manager. It takes care of loading your modules and managing dependencies.
+IMEXjs brings into you application what is known as a package manager. It takes care of loading your modules (script files) and managing dependencies.
+
+## Let's get started
+You can include the IMEX library in your web applications in many different ways. Some, I have listed below:
+- Through jsDelivr 
+```
+https://cdn.jsdelivr.net/gh/KBismark/imex/imexjs.v0.0.1.min.js
+```
+or
+```
+https://cdn.jsdelivr.net/npm/kwabenabismark/imex/imexjs.v0.0.1.min.js
+```
+
+- Clone this repo 
+```
+git clone https://github.com/KBismark/imex.git
+```
+
+- and many more to be added later.
 
 
+Now, in the head tag of your HTML document, place the code below to load the import and export library into your web application. 
+(*Replace "path/to/imexjs" with the right path to the imex library*)    
+```html
+<script src="path/to/imexjs"></script>
+```
+
+IMEXjs exposes one global object, `JSHON` through which all the magics (functions) of IMEX can be accessed.
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/gh/KBismark/imex/imexjs.v0.0.1.min.js"></script>
+        <script>
+            console.log(JSHON)
+        </script>
+    </head>
+    <body></body>
+</html>
+```
+
+*Please note. The IMEX library is a subsidiary of the JSHON project/library. The reason for (wimdow.JSHON)*
+
+## Properties and Methods
+- [include](#include) (*Method*)
+ 
+- [includesModule](#includesModule) (*Method*)
+
+- [loadModule](#loadModule) (*Method*)
+
+- [reloadModule](#reloadModule) (*Method*)
+
+- [loadPage](#loadPage) (*Method*)
+
+- [useRequire](#useRequire) (*Method*)
+
+- [import](#import) (*Property*)
+
+- [export](#export) (*Settable property*)
+
+- [global](#global) (*Settable property*)
+
+- [pathname](#pathname) (*Settable property*)
+
+- [onload](#onload) (*Settable property*)
+
+- [onerror](#onerror) (*Settable property*)
+
+- [onerrorOnce](#onerroronce) (*Settable property*)
+
+- [version](#version) (*Settable property*)
+
+
+
+
+## pathname
+In order for import and exports to be possible and also to allow loading of script files, every module must register its path. 
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //The rest of your code here...
+
+}();
+```
+
+## include
+The `include()` method is used to add dependencies of a module or a particular file. It means a module must not be executed until
+all its dependencies are successfully available or loaded. The `include()` method works like the `#include` directive in the C programming 
+language. This method loads or includes modules only once in your application. Many modules can have one particular module among their 
+dependencies. However, you should avoid a circular dependency structure, (e.g, A => B => A)
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+    //Add the rest of your modules to include...
+
+}();
+```
+
+## onload
+If a module has other modules that have to be loaded before its executed then, the `onload` property must be set to the callback function.    
+
+**NOTE:** Until this property is set, the dependecies of this module remains unloaded.
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback function
+    JSHON.onload = function yourCallbackFunction(){
+
+        //The rest of your code here...
+
+    }
+    
+
+}();
+```
+
+## onerror
+Set the `onerror` property to a function that should be executed if one or more of a module's dependencies was unable to be loaded successfully. Your `onerror()` function or calback is executed whenever an error occurs during a module dependency load.    
+
+**NOTE:** This property must be set before setting the `onload` property.
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback functions
+    JSHON.onerror = function yourErrorCallback(){
+
+        //may wait for sometime and reloadModule() here...
+
+    }
+
+    JSHON.onload = function yourCallbackFunction(){
+
+        //The rest of your code here...
+
+    }
+    
+
+}();
+```
+
+## onerrorOnce
+Set the `onerrorOnce` property to a function that should be executed if one or more of a module's dependencies was unable to be loaded successfully. Your `onerrorOnce()` function or calback is executed only the first time an error occurs during a module dependency load.
+
+
+**NOTE:** This property must be set before setting the `onload` property.
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback functions
+    JSHON.onerrorOnce = function yourErrorCallback(){
+
+        //may wait for sometime and reloadModule() here or fallback here...
+
+    }
+
+    JSHON.onload = function yourCallbackFunction(){
+
+        //The rest of your code here...
+
+    }
+    
+
+}();
+```
+
+## export
+Use the `export` property to expose methods or properties for other modules to access.
+
+**NOTE:** You can only `export` once under a pathname. Do `JSHON.export = {}` if you do not want to export from a module else, the module
+is never considered as a successful load. The `export` property must be a dictionary (a key-value pair object).
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback functions
+    JSHON.onerrorOnce = function yourErrorCallback(){
+
+        //fallback here...
+
+    }
+
+    JSHON.onerror = function yourErrorCallback(){
+
+        //may wait for sometime and reloadModule()...
+    }
+
+    JSHON.onload = function yourCallbackFunction(){
+
+        //Your code here...
+
+
+        //Export methods and props to other modules
+        JSHON.export = {
+            Method1, Method2, Prop1, Prop2, App
+        };
+
+    }
+    
+
+}();
+```
+
+
+## import
+The `import` property as its name suggests is used to import specific methods or properties exported in another module or file.
+
+**NOTE:** Use this property only in your `onload()` callback and only `import` from modules you have `include()`d.
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback functions
+    JSHON.onerrorOnce = function yourErrorCallback(){
+
+        //may wait for sometime and reloadModule() here or fallback here...
+    }
+
+    JSHON.onload = function yourCallbackFunction(){
+
+        //Import methods and props from other modules
+        const {Method1,Method2,Prop1,Prop2} = JSHON.import.from("the/path/to/another/module-1");
+        const module2App = JSHON.import.from("the/path/to/another/module-2").App;
+        const module3App = JSHON.import.from("the/path/to/another/module-3").App;
+
+        //Your code here...
+
+        //Export methods and props to other modules
+        JSHON.export = {
+            Method1, Method2, Prop1, Prop2, module2App, module3App
+        };
+    }
+    
+
+}();
+```

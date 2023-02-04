@@ -297,6 +297,8 @@ object. Using the `require()` method allows for code completions in editors like
 //Create a module
 !function(){
     JSHON.pathname = "the/path/to/this/file";
+
+    //Call useRequire to start using `require()`
     JSHON.useRequire();
 
     //Include dependencies of this module

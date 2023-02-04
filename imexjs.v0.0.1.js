@@ -387,11 +387,23 @@
     };
 
     var setRequireOnWindow = false;
+    var requireDict = {};
     //Enable the use of `require()` to import modules
-    function useRequire(){
+    function useRequire(requirObj){
+        if(requirObj){
+            requireDict = {
+                ...requirObj,
+                ...requireDict
+            };
+        }
         if(!setRequireOnWindow){
             setRequireOnWindow = true;
-            setFreezedObjectProperty(window,"require",JSHON.import.from);
+            setFreezedObjectProperty(window,"require",function require(src){
+                if(typeof(requireDict[src])=="string"){
+                    return JSHON.import.from(requireDict[src]);
+                }
+                return JSHON.import.from(src);
+            });
         }
     };
 

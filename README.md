@@ -9,16 +9,16 @@ IMEXjs brings into you application what is known as a package manager. It takes 
 You can include the IMEX library in your web applications in many different ways. Some, I have listed below:
 - Through jsDelivr 
 ```
-https://cdn.jsdelivr.net/gh/KBismark/imex/imexjs.v0.0.1.min.js
+https://cdn.jsdelivr.net/gh/KBismark/imexjs/imexjs.v0.0.1.min.js
 ```
 or
 ```
-https://cdn.jsdelivr.net/npm/kwabenabismark/imex/imexjs.v0.0.1.min.js
+https://cdn.jsdelivr.net/npm/kwabenabismark/imexjs/imexjs.v0.0.1.min.js
 ```
 
 - Clone this repo 
 ```
-git clone https://github.com/KBismark/imex.git
+git clone https://github.com/KBismark/imexjs.git
 ```
 
 - and many more to be added later.

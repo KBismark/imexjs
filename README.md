@@ -289,7 +289,9 @@ The `import` property as its name suggests is used to import specific methods or
 
 ## useRequire
 This method allows you to import modules with the `require()` method. Calling `useRequire()` sets the require method on the window
-object. Using the `require()` method allows for code completions in editors like VS Code.
+object. Using the `require()` method allows for code completions in editors like VS Code.   
+The `useRequire` method takes either one or no argument. In the case where you provide an argument, the argument must be a key-value pair
+object which maps the actual values you will pass as argument to the `require` method to the actulal paths of the files to be loaded.
 
 **NOTE:** Use this property only in your `onload()` callback and only `import` from modules you have `include()`d.
 
@@ -299,7 +301,10 @@ object. Using the `require()` method allows for code completions in editors like
     JSHON.pathname = "the/path/to/this/file";
 
     //Call useRequire to start using `require()`
-    JSHON.useRequire();
+    JSHON.useRequire({
+        "jquery":"the/path/to/jquery/file",
+        "my-module-2":"the/path/to/another/module-2"
+    });
 
     //Include dependencies of this module
     JSHON.include("the/path/to/another/module-1");
@@ -316,7 +321,7 @@ object. Using the `require()` method allows for code completions in editors like
 
         //Import methods and props from other modules
         const {Method1,Method2,Prop1,Prop2} = require("the/path/to/another/module-1");
-        const module2App = require("the/path/to/another/module-2").App;
+        const module2App = require("my-module-2").App;
         const module3App = require("the/path/to/another/module-3").App;
 
         //Your code here...

@@ -35,7 +35,7 @@ IMEXjs exposes one global object, `JSHON` through which all the magics (function
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://cdn.jsdelivr.net/gh/KBismark/imex/imexjs.v0.0.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/KBismark/imexjs/imexjs.v0.0.1.min.js"></script>
         <script>
             console.log(JSHON)
         </script>

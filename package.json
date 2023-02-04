@@ -1,0 +1,25 @@
+{
+  "name": "imexjs",
+  "version": "0.0.1",
+  "description": "An import and export library for sharing and reusing codes from different files or scripts on the web.",
+  "main": "imexjs.v0.0.1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KBismark/imexjs.git"
+  },
+  "keywords": [
+    "import",
+    "export",
+    "javaScript",
+    "webdev"
+  ],
+  "author": "Bismark Yamoah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KBismark/imexjs/issues"
+  },
+  "homepage": "https://github.com/KBismark/imexjs#readme"
+}

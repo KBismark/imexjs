@@ -385,6 +385,16 @@
         }
     
     };
+
+    var setRequireOnWindow = false;
+    //Enable the use of `require()` to import modules
+    function useRequire(){
+        if(!setRequireOnWindow){
+            setRequireOnWindow = true;
+            setFreezedObjectProperty(window,"require",JSHON.import.from);
+        }
+    };
+
     var modulesVersion={},versioned=false;
 
     var JSHONImportExportModule = {
@@ -583,12 +593,9 @@
     });
     setFreezedObjectProperty(setFreezedObjectProperty(JSHON.import,"global",{}),"from",function JSHONInternalImports(src){
         var path = symbolIdentifier+src;
-        if(JSHON.exports[path]){
-            return JSHON.exports[path];
-        }
-        return;
+        return JSHON.exports[path];
     });
-    setFreezedObjectProperty(JSHON,"includesModule",function JSHONIncludesModule(src){
+    setFreezedObjectProperty(setFreezedObjectProperty(JSHON,"useRequire",useRequire),"includesModule",function JSHONIncludesModule(src){
         return !!JSHON.import[symbolIdentifier+src];
     });
     

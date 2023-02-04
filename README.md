@@ -286,3 +286,53 @@ The `import` property as its name suggests is used to import specific methods or
 
 }();
 ```
+
+## useRequire
+This method allows you to import modules with the `require()` method. Calling `useRequire()` sets the require method on the window
+object. Using the `require()` method allows for code completions in editors like VS Code.
+
+**NOTE:** Use this property only in your `onload()` callback and only `import` from modules you have `include()`d.
+
+```js
+//Create a module
+!function(){
+    JSHON.pathname = "the/path/to/this/file";
+    JSHON.useRequire();
+
+    //Include dependencies of this module
+    JSHON.include("the/path/to/another/module-1");
+    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("the/path/to/another/module-3");
+
+    //Set the callback functions
+    JSHON.onerrorOnce = function yourErrorCallback(){
+
+        //may wait for sometime and reloadModule() here or fallback here...
+    }
+
+    JSHON.onload = function yourCallbackFunction(){
+
+        //Import methods and props from other modules
+        const {Method1,Method2,Prop1,Prop2} = require("the/path/to/another/module-1");
+        const module2App = require("the/path/to/another/module-2").App;
+        const module3App = require("the/path/to/another/module-3").App;
+
+        //Your code here...
+
+        const exp = {
+            Method1, Method2, Prop1, Prop2, module2App, module3App
+        };
+
+        //Export methods and props to other modules
+        JSHON.export = exp;
+
+        //We want the code completion feature in code editors
+        //We wrap `module.exports` in the falsy IF context to make it unreachable in our app
+        if(0){
+            module.exports = exp;
+        }
+    }
+    
+
+}();
+```

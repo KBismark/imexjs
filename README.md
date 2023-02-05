@@ -373,16 +373,17 @@ This method is used to import modules upon user interactions with your app or to
                 //Let's load the profile module when the user clicks on the view account button
                 document.getElementById("but").addEventListener("click",function(){
                     if(!loadingProfile){
+                        loadingProfile = true;
                         document.getElementById("response").textContent = "Please wait while we load your profile";
                         JSHON.loadModule("/path/to/the/profile/module",{
                             args:null,
                             onload:()=>{
-                                loadingProfile = true;
+                                loadingProfile = false;
                                 //Show the user's profile 
 
                             },
                             onerror:()=>{
-                                loadingProfile = true;
+                                loadingProfile = false;
                                 document.getElementById("response").textContent = "Sorry, an error occured. Click on the button to reload.";
                             }
                         })

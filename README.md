@@ -387,8 +387,6 @@ This method is used to import modules upon user interactions with your app or to
                                 document.getElementById("response").textContent = "Sorry, an error occured. Click on the button to reload.";
                             }
                         })
-                    }else{
-
                     }
                 },false);
 

@@ -167,6 +167,7 @@
 
     ////Uses Ajax to load index files to pages
     function loadPage(src,props){
+        src = (typeof(requireDict[src])=="string"?requireDict[src]:src);
         if(modules[src]){
             if(modules[src].loaded){
                 currentModuleRequest.abort();
@@ -303,6 +304,7 @@
 
     //Reload modules in case of failure after `loadModule()`
     function reloadModule(src){
+        src = (typeof(requireDict[src])=="string"?requireDict[src]:src);
         var dependency = symbolIdentifier+src;
         var i;
         if(this.import[dependency]/** Module is already loaded */){
@@ -333,6 +335,7 @@
     //Loads modules
     function loadModule(src,{onload=null,onerror=null,args=undefined}){
         if(typeof (onload)=="function"){
+            src = (typeof(requireDict[src])=="string"?requireDict[src]:src);
             if(!inAppModuleLoads[src]){
                 inAppModuleLoads[src] = {
                     listeners:[
@@ -398,12 +401,7 @@
         }
         if(!setRequireOnWindow){
             setRequireOnWindow = true;
-            setFreezedObjectProperty(window,"require",function require(src){
-                if(typeof(requireDict[src])=="string"){
-                    return JSHON.import.from(requireDict[src]);
-                }
-                return JSHON.import.from(src);
-            });
+            setFreezedObjectProperty(window,"require",JSHON.import.from);
         }
     };
 
@@ -599,16 +597,16 @@
         var currentFilename = symbolIdentifier+'currentPathname';
         var path = symbolIdentifier+JSHON[currentFilename];
         if(JSHON[currentFilename].length>0&&!JSHON.import[path].setup){
-            JSHON.import[path].dependencies.push(src);
+            JSHON.import[path].dependencies.push(typeof(requireDict[src])=="string"?requireDict[src]:src);
             JSHON.import[path].loadResult.push(false);
         }
     });
     setFreezedObjectProperty(setFreezedObjectProperty(JSHON.import,"global",{}),"from",function JSHONInternalImports(src){
-        var path = symbolIdentifier+src;
+        var path = symbolIdentifier+(typeof(requireDict[src])=="string"?requireDict[src]:src);
         return JSHON.exports[path];
     });
     setFreezedObjectProperty(setFreezedObjectProperty(JSHON,"useRequire",useRequire),"includesModule",function JSHONIncludesModule(src){
-        return !!JSHON.import[symbolIdentifier+src];
+        return !!JSHON.import[symbolIdentifier+(typeof(requireDict[src])=="string"?requireDict[src]:src)];
     });
     
     

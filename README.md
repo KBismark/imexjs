@@ -114,7 +114,9 @@ dependencies. However, you should avoid a circular dependency structure, (e.g, A
 ## onload
 If a module has other modules that have to be loaded before its executed then, the `onload` property must be set to the callback function.    
 
-**NOTE:** Until this property is set, the dependecies of this module remains unloaded.
+**NOTE:** 
+- Until this property is set, the dependecies of this module remains unloaded. 
+- Do not set the `onload` property if your module has no dependency.
 
 ```js
 //Create a module
@@ -343,4 +345,57 @@ It implicitly `includes()` the actulal paths of the files to be loaded
     
 
 }();
+```
+
+
+## loadModule
+This method is used to import modules upon user interactions with your app or to import modules later in your app.
+
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/gh/KBismark/imexjs/imexjs.v0.0.1.min.js"></script>
+    </head>
+    <body style="text-align:center;">
+        <button id="but">View Account</button>
+        <div id="response" style="margin-top:30px;"></div>
+        <script>
+            
+            //Create an inline module
+            //This module is not put in a separate file
+            !function(){
+                JSHON.pathname = "myApp";
+
+                var loadingProfile = false;
+
+                //Let's load the profile module when the user clicks on the view account button
+                document.getElementById("but").addEventListener("click",function(){
+                    if(!loadingProfile){
+                        document.getElementById("response").textContent = "Please wait while we load your profile";
+                        JSHON.loadModule("/path/to/the/profile/module",{
+                            args:null,
+                            onload:()=>{
+                                loadingProfile = true;
+                                //Show the user's profile 
+
+                            },
+                            onerror:()=>{
+                                loadingProfile = true;
+                                document.getElementById("response").textContent = "Sorry, an error occured. Click on the button to reload.";
+                            }
+                        })
+                    }else{
+
+                    }
+                },false);
+
+                //This module does not export anything
+                JSHON.export = {};
+            }();
+
+        </script>
+    </body>
+</html>
 ```

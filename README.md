@@ -292,8 +292,9 @@ This method allows you to import modules with the `require()` method. Calling `u
 object. Using the `require()` method allows for code completions in editors like VS Code.   
 The `useRequire` method takes either one or no argument. In the case where you provide an argument, the argument must be a key-value pair
 object which maps the actual values you will pass as argument to the `require` method to the actulal paths of the files to be loaded.
+It implicitly `includes()` the actulal paths of the files to be loaded
 
-**NOTE:** Use this property only in your `onload()` callback and only `import` from modules you have `include()`d.
+**NOTE:** Use this property only in your `onload()` callback and only `require` from modules you have `include()`d.
 
 ```js
 //Create a module
@@ -308,7 +309,7 @@ object which maps the actual values you will pass as argument to the `require` m
 
     //Include dependencies of this module
     JSHON.include("the/path/to/another/module-1");
-    JSHON.include("the/path/to/another/module-2");
+    JSHON.include("my-module-2");
     JSHON.include("the/path/to/another/module-3");
 
     //Set the callback functions

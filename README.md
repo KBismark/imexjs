@@ -398,3 +398,23 @@ This method is used to import modules upon user interactions with your app or to
     </body>
 </html>
 ```
+
+## includesModule
+This method returns a boolean which indicates whether a module is successfully loaded and available to use. 
+
+```js
+if(JSHON.includesModule("path_to_module")){
+    //do something...
+}
+```
+
+## reloadModule
+You can mannually reload a module if the module could not be loaded successfully.
+
+```js
+JSHON.onerror = function(){
+    setTimeout(()=>{
+        JSHON.reloadModule("path_to_module");
+    },6000)
+};
+```
